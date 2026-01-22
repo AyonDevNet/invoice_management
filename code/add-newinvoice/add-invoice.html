@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Invoice - Invoice Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #F3F4F6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1E40AF;
+            font-weight: bold;
+        }
+
+        .nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav a:hover {
+            opacity: 0.8;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #3B82F6;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: color 0.3s;
+        }
+
+        .back-button:hover {
+            color: #2563EB;
+        }
+
+        /* Main Form Card */
+        .form-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #3B82F6;
+        }
+
+        .form-header h1 {
+            font-size: 2rem;
+            color: #1F2937;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: #6B7280;
+            font-size: 1rem;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group label .required {
+            color: #EF4444;
+            margin-left: 4px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3B82F6;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* File Upload Section */
+        .upload-section {
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 2px dashed #D1D5DB;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            background-color: #F9FAFB;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #3B82F6;
+            background-color: #EFF6FF;
+        }
+
+        .upload-area.dragover {
+            border-color: #3B82F6;
+            background-color: #DBEAFE;
+        }
+
+        .upload-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            color: #9CA3AF;
+        }
+
+        .upload-text h3 {
+            color: #374151;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .upload-text p {
+            color: #6B7280;
+            font-size: 0.9rem;
+        }
+
+        .upload-text .file-types {
+            color: #9CA3AF;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .preview-section.active {
+            display: block;
+        }
+
+        .file-preview {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #F3F4F6;
+            border-radius: 8px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .file-icon {
+            width: 50px;
+            height: 50px;
+            background: #3B82F6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .file-size {
+            color: #6B7280;
+            font-size: 0.85rem;
+        }
+
+        .remove-file {
+            background: #EF4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .remove-file:hover {
+            background: #DC2626;
+        }
+
+        /* Image Preview */
+        .image-preview {
+            margin-top: 15px;
+            max-width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #E5E7EB;
+        }
+
+        .image-preview img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            background: #F9FAFB;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #10B981;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #6B7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4B5563;
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: #3B82F6;
+            border: 2px solid #3B82F6;
+        }
+
+        .btn-outline:hover {
+            background-color: #EFF6FF;
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            background: #D1FAE5;
+            border: 2px solid #10B981;
+            color: #047857;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #1F2937;
+            color: #9CA3AF;
+            text-align: center;
+            padding: 20px;
+            margin-top: 60px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .form-card {
+                padding: 25px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">IM</div>
+                <span>Invoice Management System</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html">Dashboard</a>
+                <a href="#search">Search</a>
+                <a href="add-invoice.html">Add Invoice</a>
+                <a href="#view">View All</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Back Button -->
+        <a href="index.html" class="back-button">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Back to Dashboard
+        </a>
+
+        <!-- Success Message -->
+        <div id="success-message" class="success-message">
+            ✓ Invoice added successfully!
+        </div>
+
+        <!-- Form Card -->
+        <div class="form-card">
+            <div class="form-header">
+                <h1>Add New Invoice</h1>
+                <p>Fill in the invoice details below. Fields marked with * are required.</p>
+            </div>
+
+            <form id="invoice-form">
+                <!-- Invoice Details -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="serial-number">Serial Number <span class="required">*</span></label>
+                        <input type="text" id="serial-number" placeholder="INV-2025-001" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="invoice-date">Invoice Date <span class="required">*</span></label>
+                        <input type="date" id="invoice-date" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="device-name">Device/Product Name <span class="required">*</span></label>
+                        <input type="text" id="device-name" placeholder="Enter device or product name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer-name">Customer Name <span class="required">*</span></label>
+                        <input type="text" id="customer-name" placeholder="Enter customer name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer-email">Customer Email</label>
+                        <input type="email" id="customer-email" placeholder="customer@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customer-phone">Customer Phone</label>
+                        <input type="tel" id="customer-phone" placeholder="+880 1XXX-XXXXXX">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">Amount <span class="required">*</span></label>
+                        <input type="number" id="amount" placeholder="0.00" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="payment-status">Payment Status</label>
+                        <select id="payment-status">
+                            <option value="paid">Paid</option>
+                            <option value="pending">Pending</option>
+                            <option value="partial">Partial</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="payment-method">Payment Method</label>
+                        <select id="payment-method">
+                            <option value="cash">Cash</option>
+                            <option value="card">Card</option>
+                            <option value="bank-transfer">Bank Transfer</option>
+                            <option value="mobile-banking">Mobile Banking</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="notes">Additional Notes</label>
+                        <textarea id="notes" placeholder="Enter any additional information about this invoice..."></textarea>
+                    </div>
+                </div>
+
+                <!-- File Upload Section -->
+                <div class="upload-section">
+                    <div class="form-group full-width">
+                        <label>Upload Invoice Document/Image</label>
+                    </div>
+                    
+                    <div class="upload-area" id="upload-area">
+                        <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                        <div class="upload-text">
+                            <h3>Click to upload or drag and drop</h3>
+                            <p>Upload invoice PDF or image</p>
+                            <p class="file-types">PNG, JPG, JPEG, PDF (Max 10MB)</p>
+                        </div>
+                        <input type="file" id="file-input" accept=".pdf,.png,.jpg,.jpeg">
+                    </div>
+
+                    <!-- File Preview -->
+                    <div id="preview-section" class="preview-section">
+                        <div class="file-preview">
+                            <div class="file-icon" id="file-icon">📄</div>
+                            <div class="file-info">
+                                <div class="file-name" id="file-name">invoice.pdf</div>
+                                <div class="file-size" id="file-size">2.5 MB</div>
+                            </div>
+                            <button type="button" class="remove-file" id="remove-file">Remove</button>
+                        </div>
+                        <div id="image-preview" class="image-preview"></div>
+                    </div>
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Save Invoice
+                    </button>
+                    <button type="button" class="btn btn-outline">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        Preview
+                    </button>
+                    <button type="reset" class="btn btn-secondary">Clear Form</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Invoice Management System. All rights reserved.</p>
+    </footer>
+</body>
+<script src="./add-invoice.js"></script>
+</html>

@@ -1,0 +1,28 @@
+
+
+
+
+User management System :
+=======================
+if any one first create that there will be empty, who will be administration in this portal.
+in this administration account he will gives access to others, 
+there are will read write and administrative permission,
+then they can upload and update everythings.
+
+
+if anyone regiester here, he will get nothing in here because to get any data access he needs first
+create first administratative account and later, he will create other accounts. where they can put 
+all data. 
+
+
+the users panel will be three type
+
+1. Super Admin : he can control everythings, like add users, give the permission of this users.
+                 remove users. He can check also all accounts and activiites.
+
+2. Admin : He has less access then super admin. he can add users , only can give the read permission.
+          but he has write permission. like he can update or upload envoices. downlod data.
+          delete data etc.
+
+3. User : he has only read access of it.
+

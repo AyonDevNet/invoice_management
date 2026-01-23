@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice Management System</title>
+    <title>Invoice Management System v6</title>
     <style>
         * {
             margin: 0;
@@ -64,6 +64,7 @@
             text-decoration: none;
             font-weight: 500;
             transition: opacity 0.3s;
+            cursor: pointer;
         }
 
         .nav a:hover {
@@ -112,10 +113,6 @@
             border-top-color: #F59E0B;
         }
 
-        .dashboard-card.export {
-            border-top-color: #8B5CF6;
-        }
-
         .card-icon {
             width: 60px;
             height: 60px;
@@ -139,11 +136,6 @@
         .view .card-icon {
             background-color: #FEF3C7;
             color: #D97706;
-        }
-
-        .export .card-icon {
-            background-color: #EDE9FE;
-            color: #6D28D9;
         }
 
         .dashboard-card h3 {
@@ -357,6 +349,11 @@
             margin-top: 60px;
         }
 
+        /* Hidden sections */
+        .hidden {
+            display: none;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .header-content {
@@ -395,74 +392,77 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
+    <header class="header" >
         <div class="header-content">
-            <div class="logo">
+            <div class="logo"></a>
                 <div class="logo-icon">IM</div>
                 <span>Invoice Management System</span>
             </div>
             <nav class="nav">
-                <a href="#dashboard" onclick="window.location.href='dashboard/dasboard.html'">Dashboard</a>
-                <a href="#search">Search</a>
-                <a href="#add" onclick="window.location.href='add-newinvoice/add-invoice.html'">Add Invoice</a>
-                <a href="#view">View All</a>
+                <a onclick="showDashboard(); window.location.href='dashboard/dasboard.html'">Dashboard</a>   
+                <a onclick="showSearchSection()">Search</a>
+                <a onclick="window.location.href='add-newinvoice/add-invoice.html'">Add Invoice</a>
+                <a onclick="showViewAllSection()">View All</a>
             </nav>
         </div>
     </header>
 
     <!-- Main Container -->
     <div class="container">
-        <!-- Stats Section -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">1,245</div>
-                <div class="stat-label">Total Invoices</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">156</div>
-                <div class="stat-label">This Month</div>
-            </div>
-        </div>
-
-        <!-- Dashboard Cards -->
-        <div class="dashboard">
-            <div class="dashboard-card search">
-                <div class="card-icon">
-                    <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
+        <!-- Dashboard Section -->
+        <div id="dashboard-section">
+            <!-- Stats Section -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">1,245</div>
+                    <div class="stat-label">Total Invoices</div>
                 </div>
-                <h3>Search Invoices</h3>
-                <p>Find invoices by serial number, device name, customer name, or date range</p>
+                <div class="stat-card">
+                    <div class="stat-number">156</div>
+                    <div class="stat-label">This Month</div>
+                </div>
             </div>
 
-            <div class="dashboard-card add"  onclick="window.location.href='add-newinvoice/add-invoice.html'">
-                <div class="card-icon">
-                    <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
+            <!-- Dashboard Cards -->
+            <div class="dashboard">
+                <div class="dashboard-card search" onclick="showSearchSection()">
+                    <div class="card-icon">
+                        <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <h3>Search Invoices</h3>
+                    <p>Find invoices by serial number, device name, customer name, or date range</p>
                 </div>
-                <h3>Add New Invoice</h3>
-                <p>Create and upload new invoice with all necessary details and attachments</p>
-            </div>
 
-            <div class="dashboard-card view" >
-                <div class="card-icon">
-                    <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                    </svg>
+                <div class="dashboard-card add" onclick="window.location.href='add-newinvoice/add-invoice.html'">
+                    <div class="card-icon">
+                        <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                    </div>
+                    <h3>Add New Invoice</h3>
+                    <p>Create and upload new invoice with all necessary details and attachments</p>
                 </div>
-                <h3>View All Invoices</h3>
-                <p>Browse through all invoices with filtering and sorting options</p>
+
+                <div class="dashboard-card view" onclick="showViewAllSection()">
+                    <div class="card-icon">
+                        <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </div>
+                    <h3>View All Invoices</h3>
+                    <p>Browse through all invoices with filtering and sorting options</p>
+                </div>
             </div>
         </div>
 
         <!-- Search Section -->
-        <div class="main-content">
+        <div class="main-content hidden" id="search-section">
             <h2 class="section-title">Search Invoices</h2>
             
-            <form class="search-form">
+            <form class="search-form" onsubmit="performSearch(event)">
                 <div class="form-group">
                     <label for="serial">Serial Number</label>
                     <input type="text" id="serial" placeholder="Enter serial number">
@@ -490,13 +490,14 @@
             </form>
 
             <div class="button-group">
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" onclick="performSearch(event)">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                     Search
                 </button>
-                <button class="btn btn-secondary">Clear Filters</button>
+                <button class="btn btn-secondary" onclick="clearSearch()">Clear Filters</button>
+                <button class="btn btn-secondary" onclick="showDashboard()">← Back to Dashboard</button>
             </div>
 
             <!-- Results Table -->
@@ -511,25 +512,49 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="search-results">
                     <tr>
-                        <td>INV-2016-001</td>
-                        <td>Laptop Dell XPS 15</td>
-                        <td>Ahmed Khan</td>
-                        <td>15 Jan 2016</td>
-                        <td>$1,299.99</td>
-                        <td class="table-actions">
-                            <button class="action-btn view">View</button>
-                            <button class="action-btn edit">Edit</button>
-                            <button class="action-btn delete">Delete</button>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #6B7280;">
+                            Enter search criteria and click "Search" to find invoices
                         </td>
                     </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- View All Section -->
+        <div class="main-content hidden" id="view-all-section">
+            <h2 class="section-title">All Invoices</h2>
+            
+            <div class="button-group" style="margin-bottom: 20px;">
+                <button class="btn btn-secondary" onclick="showDashboard()">← Back to Dashboard</button>
+                <button class="btn btn-success">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    Export All
+                </button>
+            </div>
+
+            <!-- All Invoices Table -->
+            <table class="data-table">
+                <thead>
                     <tr>
-                        <td>INV-2016-002</td>
-                        <td>iPhone 7 Plus</td>
-                        <td>Sara Rahman</td>
-                        <td>20 Jan 2016</td>
-                        <td>$869.00</td>
+                        <th>Serial #</th>
+                        <th>Device Name</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>INV-2025-012</td>
+                        <td>MacBook Pro M3</td>
+                        <td>Fatima Ali</td>
+                        <td>05 Jan 2025</td>
+                        <td>$2,499.00</td>
                         <td class="table-actions">
                             <button class="action-btn view">View</button>
                             <button class="action-btn edit">Edit</button>
@@ -549,11 +574,59 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>INV-2025-012</td>
-                        <td>MacBook Pro M3</td>
-                        <td>Fatima Ali</td>
-                        <td>05 Jan 2025</td>
-                        <td>$2,499.00</td>
+                        <td>INV-2024-155</td>
+                        <td>Apple Watch Series 9</td>
+                        <td>Sara Rahman</td>
+                        <td>05 Dec 2024</td>
+                        <td>$399.00</td>
+                        <td class="table-actions">
+                            <button class="action-btn view">View</button>
+                            <button class="action-btn edit">Edit</button>
+                            <button class="action-btn delete">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>INV-2024-154</td>
+                        <td>Dell XPS 15</td>
+                        <td>Ahmed Khan</td>
+                        <td>01 Dec 2024</td>
+                        <td>$1,799.00</td>
+                        <td class="table-actions">
+                            <button class="action-btn view">View</button>
+                            <button class="action-btn edit">Edit</button>
+                            <button class="action-btn delete">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>INV-2024-153</td>
+                        <td>iPhone 15 Pro</td>
+                        <td>Nadia Khan</td>
+                        <td>28 Nov 2024</td>
+                        <td>$1,199.00</td>
+                        <td class="table-actions">
+                            <button class="action-btn view">View</button>
+                            <button class="action-btn edit">Edit</button>
+                            <button class="action-btn delete">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>INV-2016-002</td>
+                        <td>iPhone 7 Plus</td>
+                        <td>Sara Rahman</td>
+                        <td>20 Jan 2016</td>
+                        <td>$869.00</td>
+                        <td class="table-actions">
+                            <button class="action-btn view">View</button>
+                            <button class="action-btn edit">Edit</button>
+                            <button class="action-btn delete">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>INV-2016-001</td>
+                        <td>Laptop Dell XPS 15</td>
+                        <td>Ahmed Khan</td>
+                        <td>15 Jan 2016</td>
+                        <td>$1,299.99</td>
                         <td class="table-actions">
                             <button class="action-btn view">View</button>
                             <button class="action-btn edit">Edit</button>
@@ -567,8 +640,10 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2025 Invoice Management System. All rights reserved.</p>
+        <p>&copy; 2025 Invoice Management System v6. All rights reserved.</p>
     </footer>
+
+   
 </body>
-     <script src="./dashboard/dasboard.js"></script>
+   <script src="./index_frnt.js"></script>
 </html>

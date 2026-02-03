@@ -64,7 +64,10 @@ with app.app_context():
 
 # Register blueprints
 from routes.auth import auth_bp
+from routes.invoice import invoice_bp  # ← ADD THIS LINE
+
 app.register_blueprint(auth_bp)
+app.register_blueprint(invoice_bp)  # ← ADD THIS LINE
 
 # Base routes
 @app.route('/')
@@ -80,6 +83,14 @@ def index():
                 'login': 'POST /api/login',
                 'current_user': 'GET /api/current-user',
                 'logout': 'POST /api/logout'
+            },
+            'invoices': {  # ← ADD THIS WHOLE SECTION
+                'list': 'GET /api/invoices',
+                'create': 'POST /api/invoices',
+                'get': 'GET /api/invoices/<id>',
+                'update': 'PUT /api/invoices/<id>',
+                'delete': 'DELETE /api/invoices/<id>',
+                'stats': 'GET /api/invoices/stats'
             }
         }
     })
@@ -112,5 +123,12 @@ if __name__ == '__main__':
     print('   - POST /api/login')
     print('   - GET /api/current-user')
     print('   - POST /api/logout')
+    print('\n   Invoice Management APIs:')  # ← ADD THIS SECTION
+    print('   - GET /api/invoices')
+    print('   - POST /api/invoices')
+    print('   - GET /api/invoices/<id>')
+    print('   - PUT /api/invoices/<id>')
+    print('   - DELETE /api/invoices/<id>')
+    print('   - GET /api/invoices/stats')
     print('='*60 + '\n')
     app.run(debug=True, port=5000)

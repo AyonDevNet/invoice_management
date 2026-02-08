@@ -55,7 +55,7 @@ with app.app_context():
             print('✅ Super Admin Account Created!')
             print('='*60)
             print('   Email: mohammedayon2021@gmail.com')
-            print('   Password: Ayon')
+            print('   Password:Ayon')
             print('='*60 + '\n')
         else:
             print('✅ Super Admin already exists')

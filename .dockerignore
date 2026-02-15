@@ -1,0 +1,92 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv/
+*.pyc
+
+# Database (SQLite - will be in Docker volume)
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+*.md
+docs/
+
+# Docker files themselves
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Test files
+tests/
+test_*.py
+*_test.py
+__tests__/
+
+# Coverage reports
+htmlcov/
+.coverage
+.pytest_cache/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Node modules (if any)
+node_modules/
+npm-debug.log
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# System files
+.DS_Store
+Thumbs.db

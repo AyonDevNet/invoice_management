@@ -1,0 +1,120 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # Backend API (Flask + SQLite)
+  # ==========================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile_inline: |
+        FROM python:3.11-slim
+        
+        WORKDIR /app
+        
+        # Install dependencies
+        RUN apt-get update && apt-get install -y gcc && rm -rf /var/lib/apt/lists/*
+        
+        COPY requirements.txt .
+        RUN pip install --no-cache-dir -r requirements.txt
+        
+        # Copy application
+        COPY . .
+        
+        # Create directories
+        RUN mkdir -p /app/database /app/uploads
+        
+        # Non-root user
+        RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+        USER appuser
+        
+        EXPOSE 5000
+        
+        CMD ["python", "app.py"]
+    
+    container_name: invoice_backend
+    restart: unless-stopped
+    environment:
+      FLASK_ENV: production
+      SECRET_KEY: ${SECRET_KEY:-change-this-secret-key}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-change-this-jwt-secret}
+      MAIL_SERVER: ${MAIL_SERVER:-smtp.gmail.com}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USE_TLS: ${MAIL_USE_TLS:-True}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_DEFAULT_SENDER: ${MAIL_DEFAULT_SENDER}
+      PYTHONUNBUFFERED: 1
+    volumes:
+      - backend_database:/app/database
+      - backend_uploads:/app/uploads
+    ports:
+      - "5000:5000"
+    networks:
+      - invoice_network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:5000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ==========================================
+  # Frontend (Nginx)
+  # ==========================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile_inline: |
+        FROM nginx:alpine
+        
+        # Copy nginx config
+        COPY nginx.conf /etc/nginx/nginx.conf
+        
+        # Copy frontend files
+        COPY . /usr/share/nginx/html
+        
+        # Non-root user
+        RUN addgroup -g 1000 -S appgroup && \
+            adduser -u 1000 -S appuser -G appgroup && \
+            chown -R appuser:appgroup /usr/share/nginx/html && \
+            chown -R appuser:appgroup /var/cache/nginx && \
+            chown -R appuser:appgroup /var/log/nginx && \
+            touch /var/run/nginx.pid && \
+            chown appuser:appgroup /var/run/nginx.pid
+        
+        USER appuser
+        
+        EXPOSE 80
+        
+        CMD ["nginx", "-g", "daemon off;"]
+    
+    container_name: invoice_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - invoice_network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# ==========================================
+# Networks
+# ==========================================
+networks:
+  invoice_network:
+    driver: bridge
+
+# ==========================================
+# Volumes (Persistent Storage)
+# ==========================================
+volumes:
+  backend_database:
+    name: invoice_database
+  backend_uploads:
+    name: invoice_uploads
